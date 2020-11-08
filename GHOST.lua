@@ -980,7 +980,7 @@ end
 
 if text == 'تحديث السورس ༒' and SudoBot(msg) then 
 os.execute('rm -rf GHOST.lua')
-os.execute('wget https://raw.githubusercontent.com/GHOSTTEAM/GHOST/master/GHOST.lua')
+os.execute('wget https://raw.githubusercontent.com/Ghost45i/GHOST/main/GHOST.lua')
 send(msg.chat_id_, msg.id_,' ༒ تم تحديث السورس \n ༒ لديك اخر اصدار لسورس الشبح\n ༒ الاصدار » { 1.3v}')
 dofile('GHOST.lua')  
 end
@@ -2227,7 +2227,7 @@ end
 return false
 end
 os.execute('rm -rf GHOST.lua')
-os.execute('wget https://raw.githubusercontent.com/GHOSTTEAM/GHOST/master/GHOST.lua')
+os.execute('wget https://raw.githubusercontent.com/Ghost45i/GHOST/main/GHOST.lua')
 send(msg.chat_id_, msg.id_,' ༒ تم تحديث السورس \n ༒ لديك اخر اصدار لسورس الشبح\n ༒ الاصدار » { 1.3v}')
 dofile('GHOST.lua')  
 end
