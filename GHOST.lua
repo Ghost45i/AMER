@@ -211,6 +211,14 @@ else
 return false    
 end 
 end
+function cleaner(msg)
+local hash = database:sismember(bot_id.."VVVZVV:MN:TF"..msg.chat_id_,msg.sender_user_id_)    
+if hash or SudoBot(msg) or Sudo(msg) or BasicConstructor(msg) then    
+return true    
+else    
+return false    
+end 
+end
 function Mod(msg)
 local hash = database:sismember(bot_id..'Mod:User'..msg.chat_id_,msg.sender_user_id_)    
 if hash or SudoBot(msg) or Sudo(msg) or BasicConstructor(msg) or Constructor(msg) or Manager(msg) then    
@@ -243,6 +251,8 @@ var = true
 elseif database:sismember(bot_id..'Constructor'..chat_id, user_id) then
 var = true  
 elseif database:sismember(bot_id..'Manager'..chat_id, user_id) then
+var = true 
+elseif database:sismember(bot_id..'VVVZVV:MN:TF'..chat_id, user_id) then
 var = true  
 elseif database:sismember(bot_id..'Mod:User'..chat_id, user_id) then
 var = true  
@@ -271,7 +281,9 @@ var = database:get(bot_id.."BasicConstructor:Rd"..msg.chat_id_) or 'المنشئ
 elseif database:sismember(bot_id..'Constructor'..chat_id, user_id) then
 var = database:get(bot_id.."Constructor:Rd"..msg.chat_id_) or 'المنشئ'  
 elseif database:sismember(bot_id..'Manager'..chat_id, user_id) then
-var = database:get(bot_id.."Manager:Rd"..msg.chat_id_) or 'المدير'  
+var = database:get(bot_id.."Manager:Rd"..msg.chat_id_) or 'المدير' 
+elseif database:sismember(bot_id..'VVVZVV:MN:TF'..chat_id, user_id) then
+var = 'منظف' 
 elseif database:sismember(bot_id..'Mod:User'..chat_id, user_id) then
 var = database:get(bot_id.."Mod:Rd"..msg.chat_id_) or 'الادمن'  
 elseif database:sismember(bot_id..'Special:User'..chat_id, user_id) then  
@@ -3360,6 +3372,37 @@ end
 send(msg.chat_id_, msg.id_, t)
 end
 
+if text == "all" or text == "@all" and cleaner(msg) then
+if database:get(bot_id.."VVVZVV:all:Time"..msg.chat_id_..':'..msg.sender_user_id_) then  
+return 
+send(msg.chat_id_, msg.id_,"انتظر دقيقه من فضلك")
+end
+database:setex(bot_id..'VVVZVV:all:Time'..msg.chat_id_..':'..msg.sender_user_id_,300,true)
+tdcli_function({ID="GetChannelFull",channel_id_ = msg.chat_id_:gsub('-100','')},function(argg,dataa) 
+tdcli_function({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub('-100',''), offset_ = 0,limit_ = dataa.member_count_},function(ta,amir)
+x = 0
+tags = 0
+local list = amir.members_
+for k, v in pairs(list) do
+tdcli_function({ID="GetUser",user_id_ = v.user_id_},function(arg,data)
+if x == 5 or x == tags or k == 0 then
+tags = x + 5
+t = "#all"
+end
+x = x + 1
+tagname = data.first_name_
+tagname = tagname:gsub("]","")
+tagname = tagname:gsub("[[]","")
+t = t..", ["..tagname.."](tg://user?id="..v.user_id_..")"
+if x == 5 or x == tags or k == 0 then
+local Text = t:gsub('#all,','#all\n')
+sendText(msg.chat_id_,Text,0,'md')
+end
+end,nil)
+end
+end,nil)
+end,nil)
+end
 
 
 if text == ("رفع مطور") and msg.reply_to_message_id_ and SudoBot(msg) then
@@ -7721,18 +7764,19 @@ end
 send(msg.chat_id_, msg.id_,Text) 
 end
 if text and text:match('^تنظيف (%d+)$') and Manager(msg) then
+if not database:get(bot_id..'VVVZVV:Delete:Time'..msg.chat_id_..':'..msg.sender_user_id_) then           
 local num = tonumber(text:match('^تنظيف (%d+)$')) 
 if AddChannel(msg.sender_user_id_) == false then
 local textchuser = database:get(bot_id..'text:ch:user')
 if textchuser then
 send(msg.chat_id_, msg.id_,'['..textchuser..']')
 else
-send(msg.chat_id_, msg.id_,' ☬⇠ لا تستطيع استخدام البوت \n  ☬⇠ يرجى الاشتراك بالقناه اولا \n  ☬⇠ اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
+send(msg.chat_id_, msg.id_,' ☬∫ لا تستطيع استخدام البوت \n  ☬∫ يرجى الاشتراك بالقناه اولا \n  ☬∫ اشترك هنا ['..database:get(bot_id..'add:ch:username')..']')
 end
 return false
 end
-if num > 100 then 
-send(msg.chat_id_, msg.id_,'☬⇠تستطيع التنظيف ل100 رساله كحد اقصى') 
+if num > 1000 then 
+send(msg.chat_id_, msg.id_,'☬∫تستطيع التنظيف 1000 رساله كحد اقصى') 
 return false  
 end  
 local msgm = msg.id_
@@ -7740,27 +7784,40 @@ for i=1,tonumber(num) do
 DeleteMessage(msg.chat_id_, {[0] = msgm})
 msgm = msgm - 1048576
 end
-send(msg.chat_id_,msg.id_,'☬⇠ تم حذف {'..num..'}')  
-end
-if text == "تنظيف الميديا" and Manager(msg) then
-msgm = {[0]=msg.id_}
-local Message = msg.id_
-for i=1,100 do
-Message = Message - 1048576
-msgm[i] = Message
-end
-tdcli_function({ID = "GetMessages",chat_id_ = msg.chat_id_,message_ids_ = msgm},function(arg,data)
-new = 0
-msgm2 = {}
-for i=0 ,data.total_count_ do
-if data.messages_[i] and data.messages_[i].content_ and data.messages_[i].content_.ID ~= "MessageText" then
-msgm2[new] = data.messages_[i].id_
-new = new + 1
+send(msg.chat_id_,msg.id_,'☬∫ تم حذف {'..num..'}')  
+database:setex(bot_id..'VVVZVV:Delete:Time'..msg.chat_id_..':'..msg.sender_user_id_,300,true)
 end
 end
-DeleteMessage(msg.chat_id_,msgm2)
-end,nil)  
-send(msg.chat_id_, msg.id_,"☬⇠ تم تنظيف جميع الميديا")
+if (msg.content_.animation_) or (msg.content_.photo_) or (msg.content_.video_) or (msg.content_.document) or (msg.content_.sticker_) or (msg.content_.voice_) or (msg.content_.audio_) and msg.reply_to_message_id_ == 0 then      
+database:sadd(bot_id.."VVVZVV:allM"..msg.chat_id_, msg.id_)
+end
+if text == ("امسح") and cleaner(msg) then  
+local list = database:smembers(bot_id.."VVVZVV:allM"..msg.chat_id_)
+for k,v in pairs(list) do
+local Message = v
+if Message then
+t = "☬∫ تم مسح "..k.." من الوسائط الموجوده"
+DeleteMessage(msg.chat_id_,{[0]=Message})
+database:del(bot_id.."VVVZVV:allM"..msg.chat_id_)
+end
+end
+if #list == 0 then
+t = "☬∫ لا يوجد ميديا في المجموعه"
+end
+send(msg.chat_id_, msg.id_, t)
+end
+if text == ("عدد الميديا") and cleaner(msg) then  
+local num = database:smembers(bot_id.."VVVZVV:allM"..msg.chat_id_)
+for k,v in pairs(num) do
+local numl = v
+if numl then
+l = "☬∫ عدد الميديا الموجود هو "..k
+end
+end
+if #num == 0 then
+l = "☬∫ لا يوجد ميديا في المجموعه"
+end
+send(msg.chat_id_, msg.id_, l)
 end
 if text == "تنظيف التعديل" and Manager(msg) then
 Msgs = {[0]=msg.id_}
@@ -7780,7 +7837,7 @@ end
 end
 DeleteMessage(msg.chat_id_,Msgs2)
 end,nil)  
-send(msg.chat_id_, msg.id_,'☬⇠ تم تنظيف جميع الرسائل المعدله')
+send(msg.chat_id_, msg.id_,'☬∫ تم تنظيف جميع الرسائل المعدله')
 end
 if text == "تغير اسم البوت" or text == "تغيير اسم البوت" then 
 if SudoBot(msg) then
