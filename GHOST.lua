@@ -10732,7 +10732,7 @@ Text = [[
 *☬م9 ◂ اوامر مطور الاساسي* 
 *☬م10 ◂ اوامر الاعضاء*
 ٴ*•━━━━━━ G𝐓 ━━━━━━━•*ٴ
-[𝑇𝐸𝐿𝐴𝑁𝐷 𝑇𝐸𝐴𝑀 ](t.me/cssss2) 
+[G𝐇𝐎𝐒𝐓 TEAM ](t.me/cssss2) 
 ]]
 send(msg.chat_id_, msg.id_,(help_text or Text)) 
 return false
@@ -10756,7 +10756,7 @@ for k,v in pairs(zx.ok) do
 i = i + 1
 t = t..i.."-  "..v.." \n"
 end
-send(msg.chat_id_, msg.id_, t..'ٴ☬∫ٴ*•━━━━━━ G𝐓 ━━━━━━━•*ٴ☬∫○ٴ\n☬⇠[𝑇𝐸𝐿𝐴𝑁𝐷 𝑇𝐸𝐴𝑀](t.me/cssss2) ')
+send(msg.chat_id_, msg.id_, t..'ٴ☬∫ٴ*•━━━━━━ G𝐓 ━━━━━━━•*ٴ☬∫○ٴ\n☬⇠[G𝐇𝐎𝐒𝐓 TEAM](t.me/cssss2) ')
 end
 if text == "تعطيل الابراج" and Manager(msg) then
 send(msg.chat_id_, msg.id_, '*☬⇠تم تعطيل الابراج*')
@@ -10883,7 +10883,7 @@ if audios.Info == true then
 local Text ='*☬⇠تم اختيار المقطع الصوتي لك*'
 keyboard = {} 
 keyboard.inline_keyboard = {
-{{text = '𝑇𝐸𝐿𝐴𝑁𝐷 𝑇𝐸𝐴𝑀.',url="t.me/kkaazzmm99"}},
+{{text = 'G𝐇𝐎𝐒𝐓 TEAM.',url="t.me/kkaazzmm99"}},
 }
 local msg_id = msg.id_/2097152/0.5
 https.request("https://api.telegram.org/bot"..token..'/sendVoice?chat_id=' .. msg.chat_id_ .. '&voice='..URL.escape(audios.info)..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
