@@ -64,27 +64,27 @@ os.execute('lua install.lua')
 end
 local function Files_Info_Get()
 Create_Info(database:get(Server_Done.."Token_Write"),database:get(Server_Done.."UserSudo_Write"),database:get(Server_Done.."User_Write"))  
-local RunBot = io.open("CHOST", 'w')
+local RunBot = io.open("GHOST", 'w')
 RunBot:write([[
 #!/usr/bin/env bash
-cd $HOME/CHOST
+cd $HOME/GHOST
 token="]]..database:get(Server_Done.."Token_Write")..[["
-rm -fr CHOST.lua
-wget "https://raw.githubusercontent.com/Chost45i/CHOST/main/CHOST.lua"
+rm -fr GHOST.lua
+wget "https://raw.githubusercontent.com/Ghost45i/GHOST/main/GHOST.lua"
 while(true) do
 rm -fr ../.telegram-cli
-./tg -s ./CHOST.lua -p PROFILE --bot=$token
+./tg -s ./GHOST.lua -p PROFILE --bot=$token
 done
 ]])
 RunBot:close()
 local RunTs = io.open("Run", 'w')
 RunTs:write([[
 #!/usr/bin/env bash
-cd $HOME/CHOST
+cd $HOME/GHOST
 while(true) do
 rm -fr ../.telegram-cli
-screen -S CHOST -X kill
-screen -S CHOST ./CHOST
+screen -S GHOST -X kill
+screen -S GHOST ./GHOST
 done
 ]])
 RunTs:close()

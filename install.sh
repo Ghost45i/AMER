@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-cd $HOME/CHOST
+cd $HOME/GHOST
 install() {
 rm -rf $HOME/.telegram-cli
 sudo chmod +x tg
-chmod +x CHOST
+chmod +x GHOST
 chmod +x Run
 ./Run
 }
